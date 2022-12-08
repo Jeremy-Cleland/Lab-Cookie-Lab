@@ -1,0 +1,114 @@
+#sales-table {
+  color: #bd93f9
+}
+
+body {
+  background-color: #0d0d0d;
+  color: #fff;
+  line-height: 1.5;
+  font-size: 1rem;
+}
+
+header {
+  padding: 0px;
+  margin: 0px;
+  background-color: #121212;
+  color: #60c689;
+}
+
+header img {
+  height: 100px;
+  background-color: #121212;
+  margin-bottom: -10px;
+}
+
+header h1 {
+  font-size: 2rem;
+  text-align: center;
+  color: #60c689;
+  background-color: #121212;
+  padding: 0px;
+  margin: 0px;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #121212;
+  border-bottom: 1px solid;
+  border-color: #2e2e2e;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+table,
+th,
+td {
+  border: 2px solid;
+  padding: 10px;
+  border-color: #2e2e2e;
+  text-align: center;
+}
+
+th {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #60c689;
+}
+
+tr {
+  font-size: 0.9rem;
+}
+
+tr:nth-child(even) {
+  background-color: #121212;
+}
+
+tr:hover {
+  background-color: #1f1f1f;
+  color: #ffb86c;
+  font-weight: 700;
+}
+
+footer {
+  font-size: 1rem;
+  text-align: center;
+  color: #60c689;
+  background-color: #121212;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 4px;
+}
+
+/* Create two equal columns that sits next to each other */
+.column {
+  flex: 50%;
+  padding: 0 4px;
+}
+
+.column img {
+  margin-top: 8px;
+  vertical-align: middle;
+  max-height: 200px;
+  margin: auto;
+  padding: 10px;
+}
