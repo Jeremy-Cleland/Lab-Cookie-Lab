@@ -3,14 +3,60 @@
 // *********************** GLOBALS  *************************************************************
 let hours = ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm'];
 
-let tableSelector = document.getElementById('stores');
+let storeCookieSales = document.getElementById('stores');
+let myForm = document.getElementById('form');
 
-// *********************** Rendering ***************************
+function Store(name, minCust, maxCust, averageCookie) {
+  this.name = name;
+  this.minCust = minCust;
+  this.maxCust = maxCust;
+  this.averageCookie = averageCookie;
 
+}
+
+// *********************** METHODS  ****************************
+
+Store.prototype.randomCust = function (min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+};
+
+Store.prototype.cookieSales = function () {
+  const cookiesPerHour = [];
+  for (let i = 0; i < hours.length; i++) {
+    let avCookie = Math.floor(this.randomCust(this.minCust, this.maxCust) * this.averageCookie);
+    cookiesPerHour.push(avCookie);
+  }
+  this.hourlySales = cookiesPerHour;
+  let cookies = 0;
+  for (let hour of cookiesPerHour) {
+    cookies += hour;
+  }
+  this.totalSales = cookies;
+};
+
+// *********************** RENDER  ****************************
+Store.prototype.render = function () {
+
+  let row2 = document.createElement('tr');
+  storeCookieSales.appendChild(row2);
+  row2.innerText = this.name;
+
+  for (let i = 0; i < hours.length; i++) {
+    let tableData = document.createElement('td');
+    row2.appendChild(tableData);
+    tableData.innerText = this.hourlySales[i];
+  }
+  let totalTableData = document.createElement('td');
+  row2.appendChild(totalTableData);
+  totalTableData.textContent = this.totalSales;
+
+};
+
+// *********************** HEADER  ****************************
 function header() {
 
   let row1 = document.createElement('tr');
-  tableSelector.appendChild(row1);
+  storeCookieSales.appendChild(row1);
 
   let thElem = document.createElement('th');
   thElem.textContent = 'Stores';
@@ -22,74 +68,47 @@ function header() {
     row1.appendChild(thElem);
   }
   thElem = document.createElement('th');
-  thElem.textContent = 'Total';
+  thElem.textContent = 'TotalS';
   row1.appendChild(thElem);
 }
 
-// Call header prior to render method
 header();
 
-Store.prototype.render = function () {
 
-  let row2 = document.createElement('tr');
-  tableSelector.appendChild(row2);
-
-  let tdElem = document.createElement('td');
-  tdElem.textContent = this.name;
-  row2.appendChild(tdElem);
-
-  for (let i = 0; i < hours.length; i++) {
-    let tableData = document.createElement('td');
-    tableData.textContent = this.cookiesSold[i];
-
-    row2.appendChild(tableData);
-
-  }
-  let totalTableData = document.createElement('td');
-  totalTableData.textContent = this.total;
-  row2.appendChild(totalTableData);
-};
-
-
-//************** FOOTER **************/
+// *********************** FOOTER ***************************
 function footer() {
   let row3 = document.createElement('tr');
-  tableSelector.appendChild(row3);
+  storeCookieSales.appendChild(row3);
 
   let thElem = document.createElement('th');
-  thElem.textContent = 'Total';
   row3.appendChild(thElem);
+  thElem.textContent = 'Hourly Totals';
 
-  // for (let i = 0; i < hours.length; i++) {
-  //   for (let j = 0; j < cookiesSold.length; j++) {
-  //     thElem = document.createElement('th');
-  //     total =+ cookiesSold[i] + hours[i];
-  //   }
-  // }
+
+  const hourlyTotals = [];
+  let grandTotal = 0;
+
+
+  for (let i = 0; i < hours.length; i++) {
+    let hourTotal = 0;
+    for (let j = 0; j < cities.length; j++) {
+      hourTotal += cities[j].hourlySales[i];
+    }
+    hourlyTotals.push(hourTotal);
+    grandTotal += hourTotal;
+  }
+  for (let i = 0; i < hourlyTotals.length; i++) {
+    let hourTotalRow = document.createElement('th');
+    row3.appendChild(hourTotalRow);
+    hourTotalRow.innerText = hourlyTotals[i];
+  }
+
+  let grandTotalCell = document.createElement('th');
+  row3.appendChild(grandTotalCell);
+  grandTotalCell.innerText = grandTotal;
 }
 
-
-function grandTotals() {
-  let grandTotals = document.createElement('th');
-  tableSelector.appendChild(grandTotals);
-
-}
-
-// *************** Form to add new Store Locations ************************
-
-let myForm = document.getElementById('form');
-
-// ************************* CONSTRUCTOR **********************
-
-function Store(name, minCust, maxCust, averageCookie) {
-  this.name = name;
-  this.minCust = minCust;
-  this.maxCust = maxCust;
-  this.averageCookie = averageCookie;
-  this.cookiesSold = [];
-  this.total = 0;
-
-}
+// ************************* EXECUTEABLE CODE **********************
 
 let Seattle = new Store('Seattle', 23, 65, 6.3);
 let Tokyo = new Store('Tokyo', 3, 24, 1.2);
@@ -99,22 +118,8 @@ let Lima = new Store('Lima', 2, 16, 4.6);
 
 let cities = [Seattle, Tokyo, Dubai, Paris, Lima];
 
-// *********************** METHODS  ****************************
-
-Store.prototype.randomCust = function (min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-};
-
-Store.prototype.cookieSales = function () {
-  for (let i = 0; i < hours.length; i++) {
-    let avCookie = Math.floor(this.randomCust(this.minCust, this.maxCust) * this.averageCookie);
-    this.cookiesSold.push(avCookie);
-    this.total = this.total + this.cookiesSold[i];
-  }
-};
-
-
 // Calling cookieSales Method to get Table Data
+
 Seattle.cookieSales();
 Tokyo.cookieSales();
 Dubai.cookieSales();
@@ -128,28 +133,24 @@ Tokyo.render();
 Dubai.render();
 Paris.render();
 Lima.render();
-footer();
-// console.log(Seattle);
-// console.log(Tokyo);
-// console.log(Dubai);
-// console.log(Paris);
-// console.log(Lima);
 
-function handleSubmit(event) {
-  event.preventDefault();
-  console.log('form submitted');
+// ************************* ADD EVENT LISTENER **********************
 
-  let storeName = event.target.storeName.value;
-  let minCustomers = +event.target.minCustomers.value;
-  let maxCustomers = +event.target.maxCustomers.value;
-  let averageSale = +event.target.averageSale.value;
+function handleSubmit(e) {
+  e.preventDefault();
+  let storeName = e.target.storeName.value;
+  let minCustomers = +e.target.minCustomers.value;
+  let maxCustomers = +e.target.maxCustomers.value;
+  let averageSale = +e.target.averageSale.value;
 
   let NewStore = new Store(storeName, minCustomers, maxCustomers, averageSale);
-
+  cities.push(NewStore);
+  storeCookieSales.deleteRow(-1);
   NewStore.cookieSales();
   NewStore.render();
-  console.log(NewStore);
+  footer();
 }
 
-
 myForm.addEventListener('submit', handleSubmit);
+
+
